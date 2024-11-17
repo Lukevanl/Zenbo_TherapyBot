@@ -1,0 +1,17 @@
+1. Create huggingface account and request access to LLaMa 3: https://huggingface.co/meta-llama/Llama-3.2-1B 
+2. Create virtualenv in repo directory: python -m venv .\zenbo_venv\
+3. Activate venv: Windows: '.\zenbo_venv\Scripts\activate', Linux: 'source ./zenbo_venv/bin/activate'
+3. pip install -r requirements.txt
+4. Install torch separately for GPU compatibility: pip install torch==2.1.0 torchvision==0.16.0 torchaudio==2.1.0 --index-url https://download.pytorch.org/whl/cu118
+5. Install ffmpeg: https://phoenixnap.com/kb/ffmpeg-windows (don't forget to add the install to path)
+6. Start the API: 'uvicorn response_api:app --host 0.0.0.0 --port 8000 --reload'
+6b. To connect to API on the same device where u are running it, go to: 'http://127.0.0.1:8000/docs#/default'
+For connecting from Zenbo:
+7. Connect to same network as zenbo_venv
+8. Make port 8000 accesible to other devices in network:
+8a. Open "Windows Defender Firewall."
+8b. Go to "Advanced settings" > "Inbound Rules."
+8c. Click "New Rule," and choose "Port."
+8d. Select TCP, enter the port number (8000).
+8e. Allow the connection and complete the setup.
+9. Run Zenbo code which makes the API request.
