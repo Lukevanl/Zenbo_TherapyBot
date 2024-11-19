@@ -12,7 +12,7 @@ app = FastAPI()
 whisper_model = whisper.load_model("base")
 llama_pipeline = pipeline(
     "text-generation",
-    model="meta-llama/Llama-3.2-1B-Instruct",
+    model="meta-llama/Llama-3.2-3B-Instruct",
     torch_dtype=torch.bfloat16,
     device_map="auto"
 )
@@ -33,8 +33,9 @@ def generate_response_llama(user_input: str) -> str:
     Generates a response using Llama 3.2 based on user input text.
     """
     start_time = time.time()
+    instruction_prompt = "Get the user to elaborate on their feelings. Stay neutral and empathetic, don't put a label on their feelings. You can ask how certain situations made them feel or what's going on in their mind. You can ask what problems they ran into.  Do not say I understand. Answer in 1 sentence."
     messages = [
-        {"role": "system", "content": "You are a mood tracking robot. Give very brief answers that keep the conversation going, focusing on the user's feelings and experiences. Use simple words and phrases."},
+        {"role": "system", "content": instruction_prompt},
         {"role": "user", "content": user_input}
     ]
     response = llama_pipeline(messages, max_new_tokens=50)
