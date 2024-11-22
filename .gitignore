@@ -12,6 +12,8 @@ build/
 develop-eggs/
 dist/
 downloads/
+zenbo_venv/
+pyzenbo/
 eggs/
 .eggs/
 lib/
@@ -31,6 +33,10 @@ MANIFEST
 #  before PyInstaller builds the exe, so as to inject date/other infos into it.
 *.manifest
 *.spec
+
+*.aac
+*.mp4
+*.mp3
 
 # Installer logs
 pip-log.txt
