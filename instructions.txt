@@ -4,7 +4,7 @@
 3. pip install -r requirements.txt
 4. Install torch separately for GPU compatibility: pip install torch==2.1.0 torchvision==0.16.0 torchaudio==2.1.0 --index-url https://download.pytorch.org/whl/cu118
 5. Install ffmpeg: https://phoenixnap.com/kb/ffmpeg-windows (don't forget to add the install to path)
-6. Start the API: 'uvicorn response_api:app --host 0.0.0.0 --port 8000 --reload'
+6. Start the API: 'uvicorn zenbo_api:app --host 0.0.0.0 --port 8000 --reload'
 6b. To connect to API on the same device where u are running it, go to: 'http://127.0.0.1:8000/docs#/default'
 For connecting from Zenbo:
 7. Connect to same network as zenbo_venv
