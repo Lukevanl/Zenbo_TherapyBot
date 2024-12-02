@@ -1,0 +1,15 @@
+Connect to server:
+ssh lleijenhorst@wildfire.science.ru.nl
+type in my password: qwerty123
+
+Go to the correct directory:
+cd /vol/tensusers6/lleijenhorst/lleijenhorst/
+
+Activate the virtual environment:
+source zenbo_venv_server/bin/activate
+
+Run the API:
+cd Zenbo_TherapyBot/
+python3 response_api.py
+
+Wow :)
