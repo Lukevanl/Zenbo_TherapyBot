@@ -10,6 +10,6 @@ source zenbo_venv_server/bin/activate
 
 Run the API:
 cd Zenbo_TherapyBot/
-python3 response_api.py
+python3 zenbo_api.py
 
 Wow :)
