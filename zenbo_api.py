@@ -20,7 +20,7 @@ port = 8000
 device = torch.device("cuda:1" if torch.cuda.is_available() else "cpu")
 # Load models once during startup
 print("Loading Whisper model...")
-whisper_model = whisper.load_model("turbo", device=device)
+whisper_model = whisper.load_model("tiny.en", device=device)
 
 print("Loading Llama 3.2 model...")
 llama_pipeline = pipeline(

@@ -9,4 +9,4 @@ python-multipart
 ffmpeg-python
 accelerate
 ngrok
-pydub
+pydub  
