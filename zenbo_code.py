@@ -12,6 +12,10 @@ import pyzenbo.modules.zenbo_command as commands
 import time
 import requests
 from pyzenbo.modules.dialog_system import RobotFace
+import pyzenbo
+import pyzenbo.modules.zenbo_command as commands
+import time
+from pyzenbo.modules.dialog_system import RobotFace
 
 # Zenbo IP
 host = '192.168.227.97'
@@ -24,8 +28,8 @@ response_url = url + "/generate_response"
 process_audio_url = url + "/process_audio"
 emotion_text_url = url + "/detect_emotion"
 
-zenbo_speakSpeed = 100
-zenbo_speakPitch = 100
+zenbo_speakSpeed = 100 # 50, 100, 200
+zenbo_speakPitch = 100 # 75, 100, 150
 
 # Has the robot started the introduction yet?
 robotStart = False
@@ -37,6 +41,7 @@ zenbo = pyzenbo.connect(host)
 # Keeps track of the audio recording file and the conversation up to that point
 record_audio_file = None
 conversation = []
+EXPRESSION = RobotFace.DEFAULT_STILL #DEFAULT, DEFAULT_STILL, INTERESTED, ACTIVE
 
 # Gets called when the program is exited
 def exit_function():
@@ -71,7 +76,7 @@ def record_audio_and_respond():
     time.sleep(0.5)
 
     # Set the wheel lights to strobing to indicate that Zenbo is listening, also set the expression to interested
-    zenbo.robot.set_expression(RobotFace.DEFAULT, sync=False)
+    zenbo.robot.set_expression(EXPRESSION, sync=False) # DEFAULT, DEFAULT_STILL, INERESTED, ACTIVE
     zenbo.wheelLights.set_color(wheel_lights.Lights.SYNC_BOTH, 0xff, 0x000000ff)
     zenbo.wheelLights.start_strobing(wheel_lights.Lights.SYNC_BOTH, wheel_lights.Speed.SPEED_DEFAULT)
 
@@ -111,28 +116,37 @@ def process_recording():
         #emotion = emotion_response.json()["emotion"]
         #print(emotion)
         #zenbo.robot.set_expression(RobotFace.PREVIOUS, emotion)
-
+        zenbo_speakLanguage = 2
         # Make Zenbo say the response to what the user said
-        zenbo.robot.set_expression(RobotFace.PREVIOUS, text_response)
+        zenbo.robot.set_expression(RobotFace.PREVIOUS, text_response, {'speed':zenbo_speakSpeed, 'pitch':zenbo_speakPitch, 'languageId':zenbo_speakLanguage})
         time.sleep(int(0.5))
     time.sleep(0.5)
    
+def introduce_self():
+        zenbo_speakLanguage = 2
+        zenbo.wheelLights.set_color(wheel_lights.Lights.SYNC_BOTH, 0xff, 0x000000ff)
+        zenbo.wheelLights.start_static(wheel_lights.Lights.SYNC_BOTH)
+        zenbo.robot.set_expression(RobotFace.PREVIOUS, 'Hello, I am zenbo the social robot. Lets me show you how i work! As you might notice the lights stay on when I talk. Once i stop talking they will start flickering to show that you are being recorded. Let me demonstrate that for you now' ,{'speed':zenbo_speakSpeed, 'pitch':zenbo_speakPitch, 'languageId':zenbo_speakLanguage})
+        zenbo.wheelLights.start_strobing(wheel_lights.Lights.SYNC_BOTH, wheel_lights.Speed.SPEED_DEFAULT)
+        time.sleep(3)
+        zenbo.wheelLights.start_static(wheel_lights.Lights.SYNC_BOTH)
+        
+
 def stop_recording():
     global finishedProcessing
     # Stop recording audio, and set the wheel lights to static
     zenbo.media.stop_record_audio()
     zenbo.wheelLights.start_static(wheel_lights.Lights.SYNC_BOTH)
-    zenbo.robot.set_expression(RobotFace.DEFAULT)
+    zenbo.robot.set_expression(EXPRESSION) # DEFAULT, DEFAULT_STILL, INTERESTED, ACTIVE
     process_recording()
     finishedProcessing = True
 
 
-zenbo.robot.set_expression(RobotFace.DEFAULT)
+zenbo.robot.set_expression(EXPRESSION) # DEFAULT, DEFAULT_STILL, INTERESTED, ACTIVE
 time.sleep(int(0.5))
 zenbo.on_result_callback = on_result_callback
 zenbo.system.register_screen_touch_event(event_type=1, value=1)
 time.sleep(int(1))
-#zenbo.motion.move_body(0.03, speed_level = 1, sync = True)
 
 
 
@@ -141,11 +155,13 @@ def start_signal():
   zenbo.motion.move_head(pitch_degree = 20, speed_level = 2, sync = True)
   zenbo.wheelLights.set_color(wheel_lights.Lights.SYNC_BOTH, 0xff, 0x00ffff00)
   zenbo.wheelLights.start_static(wheel_lights.Lights.SYNC_BOTH)
+
+  introduce_self()
   #zenbo.utility.track_face(False, False)
   zenbo_speakLanguage = 2
-  zenbo.robot.set_expression(RobotFace.PREVIOUS, 'How are you doing?', {'speed':zenbo_speakSpeed, 'pitch':zenbo_speakPitch, 'languageId':zenbo_speakLanguage} , sync = True)
+  zenbo.robot.set_expression(RobotFace.PREVIOUS, 'Okay lets start, what is something that you are greatful for?', {'speed':zenbo_speakSpeed, 'pitch':zenbo_speakPitch, 'languageId':zenbo_speakLanguage} , sync = True)
   #zenbo.robot.set_expression(RobotFace.PREVIOUS, 'Hello, my name is Zenbo, I am here to learn about how you are doing this week. Do you have any questions for me?', {'speed':zenbo_speakSpeed, 'pitch':zenbo_speakPitch, 'languageId':zenbo_speakLanguage} , sync = True)
-  #zenbo.robot.set_expression(RobotFace.PREVIOUS, 'Hello, my name is Zenbo. How has your week been so far', {'speed':zenbo_speakSpeed, 'pitch':zenbo_speakPitch, 'languageId':zenbo_speakLanguage} , sync = True)
+
 
   # Rounds of conversation
   roundsConvo = 5
