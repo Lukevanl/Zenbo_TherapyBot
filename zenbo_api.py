@@ -11,7 +11,7 @@ from transformers import pipeline
 import librosa
 import glob
 
-ngrok.set_auth_token("2pZ5ADFOv6X3P2JYBN47uwSDo7U_51AxvVBAbgnZzC3erMrmB")
+ngrok.set_auth_token("SECRETY")
 
 print(f"GPU Available: {torch.cuda.is_available()}")
 print(f"GPU Device Count: {torch.cuda.device_count()}")
