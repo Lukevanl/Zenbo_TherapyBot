@@ -1,3 +1,3 @@
 # Zenbo_TherapyBot
 
-![Zenbo](zenbo.png)
+![Zenbo](zenbo.jpg)
